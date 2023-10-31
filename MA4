@@ -1,59 +1,41 @@
+import math 
+import matplotlib.pyplot as plt
 import random
 
-import math
+r = 1
+n = int(input("no of points: "))  # the int to take a only the interger values 
+count = 0 #no of time its insde the circle
 
-import matplotlib.pyplot as plt
+def calculatedist(x,y):         # cal the distance form center and point 
+    return math.sqrt(x**2+y**2)
 
-def monte_carlo(n):
+points_red_x = []
+points_red_y = []
 
-    a = []
+points_blue_x = []
+points_blue_y = []
 
-    nc = 0
 
-    for i in range(n):
-
-        row = []
-
-        row.append(random. uniform (-1,1))
-
-        row.append(random. uniform (-1,1))
-
-        a.append(row)
-
-    for i in range(n):
-
-        k = math.sqrt(a[i][0]*a[i][0] + a[i][1]*a[i][1])
-
-        if k<1:
-
-            nc+=1
-
-    pi = (4*nc)/n #calclated pi
-
-    pii = math.pi #built in pi
-
-    print('pi for {} points: {}'.format(n,pi))
-
-    print('pi using built-in function: {}'.format(pii))
-
-    print('Number of points inside the circle: {}'.format(nc))
-
-    plt.scatter([i[0] for i in a if math.sqrt(i[0]*i[0] + i[1]*i[1]) > 1], [i[1] for i in a if math.sqrt(i[0]*i[0] + i[1]*i[1]) > 1], color = "red")
-
-    plt.scatter([i[0] for i in a if math.sqrt(i[0]*i[0] + i[1]*i[1]) < 1], [i[1] for i in a if math.sqrt(i[0]*i[0] + i[1]*i[1]) < 1], color = "blue")
-
-    plt.title('n='+str(n)+' pi='+str(pi)) 
+for i in range(n):
+    point_x = random.uniform(-r,r)
+    point_y = random.uniform(-r,r)
     
-    plt.savefig(str(n)+'.png')
+    if calculatedist(point_x,point_y)<1:
+        count +=1
+        points_red_x.append(point_x)
+        points_red_y.append(point_y)
+    else:
+        points_blue_x.append(point_x)
+        points_blue_y.append(point_y)
 
-def main():
+calculated_pi = (count/n)*4
 
-    a = [1000, 10000, 100000]
+print(math.pi)
+print(f"Calculated value {calculated_pi}")
 
-    for n in a:
-
-        monte_carlo(n)
-
-if __name__ == "__main__":
-
-    main()
+plt.figure() 
+plt.scatter(points_red_x,points_red_y, color='red', marker='.')
+plt.scatter(points_blue_x, points_blue_y, color='blue', marker='.')
+plt.title(f"Monte Carlo Approximation of π for n = {n} is {calculated_pi}")    
+plt.savefig(f"monte_carlo_n_{n}.png")
+plt.close()
